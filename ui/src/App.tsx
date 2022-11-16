@@ -47,6 +47,7 @@ function App() {
         }}
       >
         <img
+          className="rounded m-1 filter-white"
           src={
             playing
               ? "https://upload.wikimedia.org/wikipedia/commons/2/21/Speaker_Icon.svg"
