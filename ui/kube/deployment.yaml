@@ -36,6 +36,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.provider: "nginx"
     kubernetes.io/ingress.class: "internal"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: api-int.dev.movio.co
