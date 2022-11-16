@@ -85,6 +85,34 @@ function makeMockAPI(): API {
         title: "Harry Potter",
         posterUrl: "https://pictionarai.s3.amazonaws.com/img/hpandstone.jpeg",
       },
+      {
+        title: "The Shawshank Redemption",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/shawshank.jpeg",
+      },
+      {
+        title: "Schindler's List",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/schindler.jpeg",
+      },
+      {
+        title: "Batman",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/darkknight2.jpeg",
+      },
+      {
+        title: "Fight Club",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/fightclub.jpeg",
+      },
+      {
+        title: "Pulp Fiction",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/pulp.jpeg",
+      },
+      {
+        title: "Inglorious Basterds",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/basterds.jpeg",
+      },
+      {
+        title: "Forrest Gump",
+        posterUrl: "https://pictionarai.s3.amazonaws.com/img/gump.jpeg",
+      },
     ];
 
     return movies.map((movie, id) => ({ id, ...movie }));
