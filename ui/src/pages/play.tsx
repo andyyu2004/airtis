@@ -97,16 +97,14 @@ export const Play = ({
   return (
     <Countdown autoStart date={until} ref={ref} className="text-6xl">
       <div className="space-y-2">
-        <div className="text-3xl">
-          Round <span className="font-semibold">{round + 1}</span>
-        </div>
-        <div className="text-2xl">
-          Score <span className="font-medium">{score}</span>
-        </div>
         {round < gameSpec.rounds.length ? (
           <>
-            <div>Round {round + 1}</div>
-            <div>Score {score}</div>
+            <div className="text-3xl">
+              Round <span className="font-semibold">{round + 1}</span>
+            </div>
+            <div className="text-2xl">
+              Score <span className="font-medium">{score}</span>
+            </div>
             <Round
               movies={movies}
               setRound={setRound}
