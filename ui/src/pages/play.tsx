@@ -251,7 +251,7 @@ export const Play = ({
   );
 };
 
-const NUM_ROUNDS = 7;
+const NUM_ROUNDS = 10;
 
 function generateGameSpec(movies: Movie[]): GameSpec {
   if (movies.length < NUM_ROUNDS) {
