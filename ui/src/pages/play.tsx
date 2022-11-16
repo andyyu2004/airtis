@@ -31,6 +31,7 @@ export const Round = ({
       // add 1 score to the result
       setScore(score => score + 1);
     }
+    setSelectedMovie(null);
   };
 
   return (
