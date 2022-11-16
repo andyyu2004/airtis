@@ -20,22 +20,22 @@ export const Round = ({
   setScore,
 }: RoundProps) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const targetMovie = movies.find((m) => m.id === roundSpec.targetMovieId)!;
+  const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
   console.log(targetMovie);
 
   const checkResult = () => {
     // advance to next round
-    setRound((round) => round + 1);
+    setRound(round => round + 1);
     const result = selectedMovie!.id === targetMovie.id ? "win" : "lose";
     if (result === "win") {
       // add 1 score to the result
-      setScore((score) => score + 1);
+      setScore(score => score + 1);
     }
   };
 
   return (
     <div>
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-5">
         {/* <div className="w-[512px] h-[512px] bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/25/Blisk-logo-512-512-background-transparent.png')]"></div> */}
         <div>
           <img className="w-[512px] h-[512px]" src={targetMovie.posterUrl} />
@@ -46,14 +46,15 @@ export const Round = ({
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
         />
-
-        <button
-          disabled={selectedMovie === null}
-          onClick={checkResult}
-          className="p-2 w-32 text-white font-bold cursor-pointer rounded bg-gray-400 hover:bg-gray-600"
-        >
-          Submit
-        </button>
+        <div className="flex justify-end">
+          <button
+            disabled={selectedMovie == null}
+            onClick={checkResult}
+            className="p-2 w-32 text-white font-bold cursor-pointer rounded bg-blue-700 hover:bg-blue-600 disabled:bg-slate-400"
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -70,7 +71,7 @@ export const Play = ({
   const [score, setScore] = useState(0);
 
   return (
-    <div>
+    <div className="space-y-2">
       <div>Round {round + 1}</div>
       <div>Score {score}</div>
       {round < gameSpec.rounds.length ? (
@@ -97,7 +98,7 @@ function generateGameSpec(movies: Movie[]): GameSpec {
   const rounds: RoundSpec[] = [];
   while (rounds.length < NUM_ROUNDS) {
     const targetMovieId = movies[Math.floor(Math.random() * movies.length)].id;
-    if (rounds.find((r) => r.targetMovieId === targetMovieId)) {
+    if (rounds.find(r => r.targetMovieId === targetMovieId)) {
       continue;
     }
     rounds.push({ targetMovieId });
@@ -127,7 +128,7 @@ export const Game = () => {
 
   return (
     <>
-      {movies.map((movie) => (
+      {movies.map(movie => (
         // hack to make all the images for the game preload in cache
         // otherwise loading next round is slow
         <img key={movie.id} style={{ display: "none" }} src={movie.posterUrl} />
