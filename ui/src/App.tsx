@@ -1,6 +1,6 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home, Play } from "./pages";
+import { Home, Play, Result } from "./pages";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -15,6 +15,10 @@ function App() {
     {
       path: "/play",
       element: <Play />,
+    },
+    {
+      path: "/result",
+      element: <Result />,
     },
   ]);
 
