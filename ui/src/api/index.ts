@@ -199,7 +199,7 @@ function makeMockAPI(): API {
           "https://pictionarai.s3.amazonaws.com/img/20221116221632_00004_die_hard_movie.png",
       },
       {
-        title: "Skyfall",
+        title: "007: Skyfall",
         posterUrl:
           "https://pictionarai.s3.amazonaws.com/img/20221116221632_00005__skyfall_movie.png",
       },
