@@ -3,14 +3,16 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { GameSpec, RoundSpec } from "../state";
 import { useQuery } from "@tanstack/react-query";
 import { api, Movie } from "../api";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Countdown from "react-countdown";
 import { useTimer } from "react-timer-hook";
+import { Dialog, Transition } from "@headlessui/react";
 
 export type RoundProps = {
   movies: Movie[];
   roundSpec: RoundSpec;
+  roundNumber: number;
   setRound: React.Dispatch<React.SetStateAction<number>>;
   setScore: React.Dispatch<React.SetStateAction<number>>;
   setCorrectGuesses: React.Dispatch<React.SetStateAction<number>>;
@@ -19,12 +21,15 @@ export type RoundProps = {
 export const Round = ({
   movies,
   roundSpec,
+  roundNumber,
   setRound,
   setScore,
   setCorrectGuesses,
 }: RoundProps) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
+  const [showPopup, setShowPopup] = useState(false);
+  const [isRoundWin, setIsRoundWin] = useState(false);
 
   const timeoutSeconds = import.meta.env.DEV ? 8000 : 20000;
 
@@ -35,17 +40,28 @@ export const Round = ({
   });
 
   function checkResult() {
-    // advance to next round
-    setRound(round => round + 1);
     // if no movie selected (due to timeout) it will be a lose
     const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
     if (result === "win") {
       // FIXME naive score computation: lose one point for every second used
       setScore(score => score + (timeoutSeconds / 1000 - seconds));
       setCorrectGuesses(correctGuesses => correctGuesses + 1);
+      setIsRoundWin(true);
     }
     setSelectedMovie(null);
+
+    // last round don't need to show popup
+    if (roundNumber < NUM_ROUNDS - 1) {
+      setShowPopup(true);
+    } else {
+      // advance to next round
+      setRound(round => round + 1);
+    }
   }
+
+  const closeModal = () => {
+    setShowPopup(false);
+  };
 
   // the idea of this calculation is to get less blurry as time ticks down becoming fully unblurry when 1/3 of the time is left
   const blurMultiplier =
@@ -79,6 +95,64 @@ export const Round = ({
           </button>
         </div>
       </div>
+      {showPopup && (
+        <Transition appear show={showPopup} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={() => {}}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium leading-6 text-gray-900"
+                    >
+                      {isRoundWin ? "You are correct!" : "Almost there!"}
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Your score has been successfully recorded.
+                      </p>
+                    </div>
+
+                    <div className="mt-4">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={() => {
+                          closeModal();
+                          // advance to next round
+                          setRound(round => round + 1);
+                        }}
+                      >
+                        Got it, Go to Next round!
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
+      )}
     </div>
   );
 };
@@ -118,6 +192,7 @@ export const Play = ({
               Score <span className="font-medium">{score}</span>
             </div>
             <Round
+              roundNumber={round}
               movies={movies}
               setRound={setRound}
               roundSpec={gameSpec.rounds[round]}
