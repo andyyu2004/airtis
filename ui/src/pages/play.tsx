@@ -22,7 +22,6 @@ export const Play = () => {
     throw new Error();
   }
 
-
   return (
     <div>
       <div className="flex flex-col gap-10">

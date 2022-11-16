@@ -19,11 +19,11 @@ export function SearchDropdown({
     query === ""
       ? []
       : movies.filter((movie) => {
-        return movie.title.toLowerCase().includes(query.toLowerCase());
-      });
+          return movie.title.toLowerCase().includes(query.toLowerCase());
+        });
 
   return (
-    <Combobox value={selectedMovie} onChange={setSelectedMovie} >
+    <Combobox value={selectedMovie} onChange={setSelectedMovie}>
       <div className="relative text-left mb-32">
         <Combobox.Label className="p-1">Guess the movie:</Combobox.Label>
         <Combobox.Input
@@ -31,7 +31,7 @@ export function SearchDropdown({
           onChange={(event) => {
             setQuery(event.target.value);
           }}
-        // displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
+          // displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
         />
         <Transition
           leave="transition ease-in duration-100"
@@ -45,7 +45,7 @@ export function SearchDropdown({
                 <Combobox.Option
                   className="bg-gray-100 cursor-pointer hover:bg-gray-200 p-2"
                   key={movie.tmdbId}
-                  value={movie.title}
+                  value={movie}
                 >
                   {movie.title}
                 </Combobox.Option>
