@@ -36,14 +36,13 @@ metadata:
   annotations:
     kubernetes.io/ingress.provider: "nginx"
     kubernetes.io/ingress.class: "internal"
-    nginx.ingress.kubernetes.io/enable-cors: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - host: api-int.dev.movio.co
       http:
         paths:
-          - path: /core/airtis
+          - path: /core/airtis(/|$)(.*)
             pathType: Prefix
             backend:
               service:
