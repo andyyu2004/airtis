@@ -18,6 +18,8 @@ export type RoundProps = {
   setCorrectGuesses: React.Dispatch<React.SetStateAction<number>>;
 };
 
+type RoundResult = "correct" | "incorrect" | "timeout";
+
 export const Round = ({
   movies,
   roundSpec,
@@ -29,7 +31,7 @@ export const Round = ({
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
   const [showPopup, setShowPopup] = useState(false);
-  const [isRoundWin, setIsRoundWin] = useState(false);
+  const [roundResult, setRoundResult] = useState("incorrect");
 
   const timeoutSeconds = import.meta.env.DEV ? 8000 : 20000;
 
@@ -47,7 +49,11 @@ export const Round = ({
       // FIXME naive score computation: lose one point for every second used
       setScore(score => score + (timeoutSeconds / 1000 - seconds));
       setCorrectGuesses(correctGuesses => correctGuesses + 1);
-      setIsRoundWin(true);
+      setRoundResult("correct");
+    } else if (selectedMovie) {
+      setRoundResult("incorrect");
+    } else {
+      setRoundResult("timeout");
     }
     setSelectedMovie(null);
 
@@ -126,9 +132,11 @@ export const Round = ({
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
-                      {isRoundWin
+                      {roundResult === "correct"
                         ? "You are correct!"
-                        : `Not quite! The right answer was ${targetMovie.title}`}
+                        : roundResult === "incorrect"
+                        ? `Not quite! The right answer was ${targetMovie.title}`
+                        : `Time's up! The right answer was ${targetMovie.title}`}
                     </Dialog.Title>
 
                     <div className="mt-4">
