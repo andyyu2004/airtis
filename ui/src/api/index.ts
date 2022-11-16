@@ -53,6 +53,12 @@ function makeMockAPI(): API {
         posterUrl:
           "https://pictionarai.s3.amazonaws.com/img/20221116022600_00000_lady_with_an_umbrella_in_space_trending_on_artstation.png",
       },
+      {
+        id: 8,
+        title: "Black Adam",
+        posterUrl:
+          "https://pictionarai.s3.amazonaws.com/img/blackadamtest.jpeg",
+      },
     ];
   }
 
