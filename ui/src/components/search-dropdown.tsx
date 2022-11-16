@@ -43,7 +43,7 @@ export function SearchDropdown({
               {filteredMovies.map((movie) => (
                 <Combobox.Option
                   className="bg-gray-100 cursor-pointer hover:bg-gray-200 p-2"
-                  key={movie.tmdbId}
+                  key={movie.id}
                   value={movie}
                 >
                   {movie.title}
