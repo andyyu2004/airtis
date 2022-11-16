@@ -26,7 +26,7 @@ export const Round = ({
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
 
-  const timeoutSeconds = import.meta.env.DEV ? 5000 : 15000;
+  const timeoutSeconds = import.meta.env.DEV ? 8000 : 20000;
 
   const { seconds } = useTimer({
     autoStart: true,
@@ -60,7 +60,7 @@ export const Round = ({
           <img
             className="w-[512px] h-[512px]"
             src={targetMovie.posterUrl}
-            style={{ filter: `blur(${20 * blurMultiplier}px)` }}
+            style={{ filter: `blur(${30 * blurMultiplier}px)` }}
           />
         </div>
         {/* {<div>{targetMovie.posterUrl} </div>} */}
