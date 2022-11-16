@@ -1,5 +1,7 @@
+export type TmdbId = number;
+
 export type Movie = {
-  tmdbId: number;
+  tmdbId: TmdbId;
   title: string;
   posterUrl: string;
 };

@@ -4,21 +4,26 @@ import { Movie } from "../api";
 
 type Props = {
   movies: Movie[];
+  selectedMovie?: Movie;
+  setSelectedMovie: React.Dispatch<Movie>;
 };
 
-export function SearchDropdown({ movies }: Props) {
-  const [selectedMovie, setSelectedMovie] = useState<string | undefined>();
+export function SearchDropdown({
+  movies,
+  selectedMovie,
+  setSelectedMovie,
+}: Props) {
   const [query, setQuery] = useState("");
 
   const filteredMovies =
     query === ""
       ? []
       : movies.filter((movie) => {
-          return movie.title.toLowerCase().includes(query.toLowerCase());
-        });
+        return movie.title.toLowerCase().includes(query.toLowerCase());
+      });
 
   return (
-    <Combobox value={selectedMovie} onChange={setSelectedMovie}>
+    <Combobox value={selectedMovie} onChange={setSelectedMovie} >
       <div className="relative text-left mb-32">
         <Combobox.Label className="p-1">Guess the movie:</Combobox.Label>
         <Combobox.Input
@@ -26,6 +31,7 @@ export function SearchDropdown({ movies }: Props) {
           onChange={(event) => {
             setQuery(event.target.value);
           }}
+        // displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
         />
         <Transition
           leave="transition ease-in duration-100"

@@ -1,7 +1,8 @@
 import { SearchDropdown } from "../components/search-dropdown";
 
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../api";
+import { api, Movie } from "../api";
+import { useState } from "react";
 
 export const Play = () => {
   const {
@@ -13,17 +14,26 @@ export const Play = () => {
     queryFn: api().movies,
   });
 
+  const [selectedMovie, setSelectedMovie] = useState<Movie>();
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
   if (!movies) {
     throw new Error();
   }
 
+
   return (
     <div>
       <div className="flex flex-col gap-10">
         <div className="w-[512px] h-[512px] bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/25/Blisk-logo-512-512-background-transparent.png')]"></div>
-        <SearchDropdown movies={movies} />
+        <img />
+        <div>selected {selectedMovie?.title ?? "none"}</div>
+        <SearchDropdown
+          movies={movies}
+          selectedMovie={selectedMovie}
+          setSelectedMovie={setSelectedMovie}
+        />
       </div>
     </div>
   );
