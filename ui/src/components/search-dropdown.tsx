@@ -123,7 +123,7 @@ export function SearchDropdown({
         <Combobox.Input
           autoComplete="off"
           ref={inputRef}
-          className="py-2 px-3 text-sm leading-5 focus:ring-0 h-10 w-full rounded border border-gray-300"
+          className="py-2 px-3 text-sm leading-5 focus:ring-0 h-10 w-full rounded border-none border-gray-600 bg-slate-700"
           onChange={event => setQuery(event.target.value)}
           displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
         />
@@ -137,7 +137,7 @@ export function SearchDropdown({
             <Combobox.Options className="absolute mt-1 max-h-36 w-full overflow-auto rounded bg-white  text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filteredMovies.map(movie => (
                 <Combobox.Option
-                  className="font-bold bg-gray-400 text-slate-100 cursor-pointer hover:bg-gray-500 hover:text-white p-2"
+                  className="font-bold bg-gray-500 text-slate-100 cursor-pointer hover:bg-gray-600 hover:text-white p-2"
                   key={movie.id}
                   value={movie}
                 >

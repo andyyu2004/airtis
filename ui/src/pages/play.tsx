@@ -31,7 +31,7 @@ export const Round = ({
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
   const [showPopup, setShowPopup] = useState(false);
-  const [roundResult, setRoundResult] = useState("incorrect");
+  const [roundResult, setRoundResult] = useState<RoundResult>("incorrect");
   const [blurMultiplier, setBlurMultiplier] = useState(100);
 
   const timeoutSeconds = import.meta.env.DEV ? 10000 : 30000;
@@ -97,7 +97,7 @@ export const Round = ({
         {/* <div className="w-[512px] h-[512px] bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/25/Blisk-logo-512-512-background-transparent.png')]"></div> */}
         <div>
           <img
-            className="w-[512px] h-[512px]"
+            className="w-[512px] h-[512px] rounded-md"
             src={targetMovie.posterUrl}
             style={{ filter: `blur(${30 * blurMultiplier}px)` }}
           />
@@ -112,7 +112,7 @@ export const Round = ({
           <button
             disabled={selectedMovie == null}
             onClick={checkResult}
-            className="p-2 w-32 text-white font-bold cursor-pointer rounded bg-blue-700 hover:bg-blue-600 disabled:bg-slate-400"
+            className="p-2 w-32 text-white font-bold cursor-pointer rounded bg-blue-700 hover:bg-blue-600 disabled:bg-slate-700 shadow-md"
           >
             Submit
           </button>
@@ -120,7 +120,13 @@ export const Round = ({
       </div>
       {showPopup && (
         <Transition appear show={showPopup} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={() => {}}>
+          <Dialog
+            as="div"
+            className={`relative z-10 ${
+              roundResult === "correct" ? "bg-green-500" : "bg-red-500"
+            }`}
+            onClose={() => {}}
+          >
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -143,7 +149,11 @@ export const Round = ({
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Panel
+                    className={`w-full max-w-lg transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all ${
+                      roundResult === "correct" ? "bg-green-400" : "bg-red-400"
+                    }`}
+                  >
                     <Dialog.Title
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
@@ -157,7 +167,7 @@ export const Round = ({
                     </Dialog.Title>
                     <div className="mt-3">
                       <img
-                        className="w-[476px] h-[476px]"
+                        className="w-[476px] h-[476px] rounded-md"
                         src={targetMovie.posterUrl}
                       />
                     </div>
