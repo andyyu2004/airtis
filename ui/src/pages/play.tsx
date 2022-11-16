@@ -58,11 +58,8 @@ export const Round = ({
     setSelectedMovie(null);
 
     // last round don't need to show popup
-    if (roundNumber < NUM_ROUNDS - 1) {
+    if (roundNumber < NUM_ROUNDS) {
       setShowPopup(true);
-    } else {
-      // advance to next round
-      setRound(round => round + 1);
     }
   }
 
@@ -149,7 +146,11 @@ export const Round = ({
                           setRound(round => round + 1);
                         }}
                       >
-                        Got it, Go to Next round!
+                        {`Got it, Go to ${
+                          roundNumber === NUM_ROUNDS - 1
+                            ? "result"
+                            : "next round"
+                        }`}
                       </button>
                     </div>
                   </Dialog.Panel>

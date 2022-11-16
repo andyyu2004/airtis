@@ -127,7 +127,7 @@ export function SearchDropdown({
           afterLeave={() => setQuery("")}
         >
           {filteredMovies.length > 0 && (
-            <Combobox.Options className="absolute mt-1 max-h-32 w-full overflow-auto rounded bg-white  text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Combobox.Options className="absolute mt-1 max-h-36 w-full overflow-auto rounded bg-white  text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filteredMovies.map(movie => (
                 <Combobox.Option
                   className="font-bold bg-gray-400 text-slate-100 cursor-pointer hover:bg-gray-500 hover:text-white p-2"
