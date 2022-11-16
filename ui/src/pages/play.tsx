@@ -21,8 +21,7 @@ export const Round = ({ movies, targetMovieIdx }: RoundProps) => {
 
   const checkResult = () => {
     setRound((round) => round + 1);
-    const result =
-      selectedMovie!.tmdbId === targetMovie.tmdbId ? "win" : "lose";
+    const result = selectedMovie!.id === targetMovie.id ? "win" : "lose";
     if (result === "win") {
       // add 1 score to the result
       setScore((score) => score + 1);
