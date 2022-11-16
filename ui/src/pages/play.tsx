@@ -185,7 +185,8 @@ export const Play = ({
   useEffect(() => {
     setUntil(Date.now() + countdownSeconds);
     // doesn't autostart a second time without this explicit call for some reason
-    ref.current?.start();
+    while (!ref.current) {}
+    ref.current.start();
   }, [round]);
 
   return (
