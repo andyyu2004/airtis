@@ -13,6 +13,7 @@ export type RoundProps = {
   roundSpec: RoundSpec;
   setRound: React.Dispatch<React.SetStateAction<number>>;
   setScore: React.Dispatch<React.SetStateAction<number>>;
+  setCorrectGuesses: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const Round = ({
@@ -20,21 +21,10 @@ export const Round = ({
   roundSpec,
   setRound,
   setScore,
+  setCorrectGuesses,
 }: RoundProps) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
-
-  const checkResult = () => {
-    // advance to next round
-    setRound(round => round + 1);
-    // if no movie selected (due to timeout) it will be a lose
-    const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
-    if (result === "win") {
-      // add 1 score to the result
-      setScore(score => score + 1);
-    }
-    setSelectedMovie(null);
-  };
 
   const timeoutSeconds = import.meta.env.DEV ? 5000 : 15000;
 
@@ -43,6 +33,19 @@ export const Round = ({
     expiryTimestamp: new Date(Date.now() + timeoutSeconds),
     onExpire: checkResult,
   });
+
+  function checkResult() {
+    // advance to next round
+    setRound(round => round + 1);
+    // if no movie selected (due to timeout) it will be a lose
+    const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
+    if (result === "win") {
+      // FIXME naive score computation: lose one point for every second used
+      setScore(score => score + (timeoutSeconds / 1000 - seconds));
+      setCorrectGuesses(correctGuesses => correctGuesses + 1);
+    }
+    setSelectedMovie(null);
+  }
 
   return (
     <div>
@@ -81,6 +84,7 @@ export const Play = ({
 }) => {
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
+  const [correctGuesses, setCorrectGuesses] = useState(0);
 
   const ref = useRef<Countdown>(null);
   const countdownSeconds = import.meta.env.DEV ? 800 : 3000;
@@ -110,10 +114,14 @@ export const Play = ({
               setRound={setRound}
               roundSpec={gameSpec.rounds[round]}
               setScore={setScore}
+              setCorrectGuesses={setCorrectGuesses}
             />
           </>
         ) : (
-          <Navigate to="/result" state={{ score, numRounds: NUM_ROUNDS }} />
+          <Navigate
+            to="/result"
+            state={{ score, correctGuesses, numRounds: NUM_ROUNDS }}
+          />
         )}
       </div>
     </Countdown>
