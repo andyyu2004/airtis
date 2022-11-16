@@ -1,8 +1,9 @@
 import { SearchDropdown } from "../components/search-dropdown";
-
+import { useRecoilState, useRecoilValue } from "recoil";
+import { roundState, scoreState } from "../state";
 import { useQuery } from "@tanstack/react-query";
 import { api, Movie } from "../api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export type RoundProps = {
@@ -11,15 +12,22 @@ export type RoundProps = {
 };
 
 export const Round = ({ movies, targetMovieIdx }: RoundProps) => {
+  const [round, setRound] = useRecoilState(roundState);
+  const [score, setScore] = useRecoilState(scoreState);
   const navigate = useNavigate();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies[targetMovieIdx];
   console.log(targetMovie);
 
   const checkResult = () => {
+    setRound((round) => round + 1);
     const result =
       selectedMovie!.tmdbId === targetMovie.tmdbId ? "win" : "lose";
-    navigate("/result", { state: { result } });
+    if (result === "win") {
+      // add 1 score to the result
+      setScore((score) => score + 1);
+    }
+    // navigate("/result", { state: { result } });
   };
 
   return (
@@ -35,20 +43,21 @@ export const Round = ({ movies, targetMovieIdx }: RoundProps) => {
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
         />
-        {selectedMovie && (
-          <button
-            onClick={checkResult}
-            className="p-2 w-32 text-white font-bold cursor-pointer rounded bg-gray-800 hover:bg-gray-600"
-          >
-            Submit
-          </button>
-        )}
+
+        <button
+          disabled={selectedMovie === null}
+          onClick={checkResult}
+          className="p-2 w-32 text-white font-bold cursor-pointer rounded bg-gray-400 hover:bg-gray-600"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );
 };
 
 export const Play = () => {
+  const navigate = useNavigate();
   const {
     isLoading,
     error,
@@ -57,6 +66,17 @@ export const Play = () => {
     queryKey: ["movies"],
     queryFn: api().movies,
   });
+  const round = useRecoilValue(roundState);
+  const [targetMovieId, setTargetMovieId] = useState(
+    Math.floor(Math.random() * (movies?.length ?? 0))
+  );
+  useEffect(() => {
+    setTargetMovieId(Math.floor(Math.random() * (movies?.length ?? 0)));
+    console.log("round:", round);
+    if (round === 5) {
+      navigate("/result");
+    }
+  }, [round]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
@@ -64,6 +84,6 @@ export const Play = () => {
     throw new Error();
   }
 
-  const targetMovieId = Math.floor(Math.random() * movies.length);
+  console.log("target", targetMovieId);
   return <Round targetMovieIdx={targetMovieId} movies={movies} />;
 };
