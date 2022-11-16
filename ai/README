@@ -1,3 +1,17 @@
+## CURSED PICTIONARY
+An AI will tell another AI what to draw...what could possibly go wrong!?
+
+```sh
+
+pipenv install
+
+pipenv shell
+
+huggingface-cli login
+
+python pictionary.py <movie title>
+```
+
 ## CURSED IMAGES GENERATOR
 
 ```sh
@@ -7,7 +21,17 @@ pipenv shell
 
 huggingface-cli login
 
-python text2image.py "PROMPT" s3://pictionarai/imgages/
+python text2image.py <prompt> s3://pictionarai/imgages/
 ```
 
+## TEXT FROM IMAGES
 
+```sh
+pipenv install
+
+pipenv shell
+
+huggingface-cli login
+
+python image2text.py <image_path>
+```
