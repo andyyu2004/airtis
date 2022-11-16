@@ -33,7 +33,7 @@ export const Round = ({
 
   const timeoutSeconds = import.meta.env.DEV ? 8000 : 20000;
 
-  const { seconds } = useTimer({
+  const { seconds, pause } = useTimer({
     autoStart: true,
     expiryTimestamp: new Date(Date.now() + timeoutSeconds),
     onExpire: checkResult,
@@ -42,6 +42,7 @@ export const Round = ({
   function checkResult() {
     // if no movie selected (due to timeout) it will be a lose
     const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
+    pause();
     if (result === "win") {
       // FIXME naive score computation: lose one point for every second used
       setScore(score => score + (timeoutSeconds / 1000 - seconds));
