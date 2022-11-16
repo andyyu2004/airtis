@@ -55,10 +55,10 @@ export const Round = ({
     setRound(round => round + 1);
   };
 
-  const countdownSeconds = 3000;
+  const popupCountdownMillis = 5000;
   const { seconds: secs, start: startPopupCountdown } = useTimer({
     autoStart: false,
-    expiryTimestamp: new Date(Date.now() + countdownSeconds),
+    expiryTimestamp: new Date(Date.now() + popupCountdownMillis),
     onExpire: goToNextRound,
   });
 
