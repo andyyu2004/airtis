@@ -1,6 +1,24 @@
 import { SearchDropdown } from "../components/search-dropdown";
 
-const Play = () => {
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../api";
+
+export const Play = () => {
+  const {
+    isLoading,
+    error,
+    data: movies,
+  } = useQuery({
+    queryKey: ["movies"],
+    queryFn: api().movies,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error has occurred</div>;
+  if (!movies) {
+    throw new Error();
+  }
+
   return (
     <div>
       <div className="flex flex-col gap-10">
@@ -10,5 +28,3 @@ const Play = () => {
     </div>
   );
 };
-
-export default Play;
