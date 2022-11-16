@@ -58,7 +58,7 @@ function makeMockAPI(): API {
           "https://pictionarai.s3.amazonaws.com/img/terrifiertest.jpeg",
       },
       {
-        title: "The Conjuring",
+        title: "The Terminator",
         posterUrl: "https://pictionarai.s3.amazonaws.com/img/terminator.jpeg",
       },
       {
@@ -74,7 +74,7 @@ function makeMockAPI(): API {
         posterUrl: "https://pictionarai.s3.amazonaws.com/img/godfather",
       },
       {
-        title: "Jurrasic Park",
+        title: "Jurassic Park",
         posterUrl: "https://pictionarai.s3.amazonaws.com/img/jpark.jpeg",
       },
       {
