@@ -47,13 +47,21 @@ export const Round = ({
     setSelectedMovie(null);
   }
 
+  // the idea of this calculation is to get less blurry as time ticks down becoming fully unblurry when 1/3 of the time is left
+  const blurMultiplier =
+    Math.max(seconds * 1000 - timeoutSeconds / 3, 0) / timeoutSeconds;
+
   return (
     <div>
       <div className="flex flex-col gap-5">
         <div>Time: {seconds}</div>
         {/* <div className="w-[512px] h-[512px] bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/25/Blisk-logo-512-512-background-transparent.png')]"></div> */}
         <div>
-          <img className="w-[512px] h-[512px]" src={targetMovie.posterUrl} />
+          <img
+            className="w-[512px] h-[512px]"
+            src={targetMovie.posterUrl}
+            style={{ filter: `blur(${20 * blurMultiplier}px)` }}
+          />
         </div>
         {/* {<div>{targetMovie.posterUrl} </div>} */}
         <SearchDropdown
