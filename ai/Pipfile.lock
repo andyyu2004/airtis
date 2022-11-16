@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "212145950ecb03c6224cf2589dcba45a67d2a8695216ff0f04ab7e7b5d939843"
+            "sha256": "f674b33b164d509d691c138d4095c9b50d4e101c9480b0944d80df1147a0b7b6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -58,11 +58,11 @@
         },
         "huggingface-hub": {
             "hashes": [
-                "sha256:1a2130bd22bca73e982c41ffa13756456824cb96edfdca55cb11d4ffd2461094",
-                "sha256:ffd24cf47805b9332e0dc27c7011ae81768e4205d97ee07dbb06106ae9ed53ed"
+                "sha256:1f540c6d57cb1684d3578d7bf2d35041a5145b17e8af932505db7f4fbcc7640d",
+                "sha256:b48860d791502c2b8a0e6c841214df19c67999198a75d1417512b45752508ac6"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==0.11.0rc1"
+            "version": "==0.11.0"
         },
         "idna": {
             "hashes": [
@@ -362,7 +362,7 @@
                 "sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983",
                 "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"
             ],
-            "markers": "python_version >= '3.7' and python_version < '4'",
+            "index": "pypi",
             "version": "==2.28.1"
         },
         "tokenizers": {
