@@ -6,13 +6,13 @@ from diffusers import StableDiffusionPipeline
 
 
 def text2img(prompt, s3):
-    model_id = "CompVis/stable-diffusion-v1-4"
-    device = "mps"
-    # device = "cuda" # ONLY FOR NVIDIA
+    model_id = "CompVis/stable-diffusion-v1-4" 
 
-    pipe = StableDiffusionPipeline.from_pretrained(model_id).to(device)
-    # pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, revision="fp16").to(device) # ONLY FOR NVIDIA
-
+    if torch.cuda.is_available():
+        pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, revision="fp16").to("cuda")
+    else 
+        pipe = StableDiffusionPipeline.from_pretrained(model_id).to("mps")
+    
     image = pipe(prompt).images[0]
 
     with tempfile.NamedTemporaryFile(suffix = ".jpeg") as f: 
