@@ -1,0 +1,13 @@
+## CURSED IMAGES GENERATOR
+
+```sh
+pipenv install
+
+pipenv shell
+
+huggingface-cli login
+
+python text2image.py "PROMPT" s3://pictionarai/imgages/
+```
+
+
