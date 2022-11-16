@@ -4,7 +4,7 @@ import { GameSpec, RoundSpec, roundState, scoreState } from "../state";
 import { useQuery } from "@tanstack/react-query";
 import { api, Movie } from "../api";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export type RoundProps = {
   movies: Movie[];
@@ -75,7 +75,7 @@ export const Play = ({
           roundSpec={gameSpec.rounds[round]}
         />
       ) : (
-        <div>done</div>
+        <Navigate to="/result" />
       )}
     </div>
   );
