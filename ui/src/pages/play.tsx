@@ -55,9 +55,9 @@ export const Round = ({
     setRound(round => round + 1);
   };
 
-  const countdownSeconds = 3000 + timeoutSeconds;
-  const { seconds: secs } = useTimer({
-    autoStart: true,
+  const countdownSeconds = 3000;
+  const { seconds: secs, start: startPopupCountdown } = useTimer({
+    autoStart: false,
     expiryTimestamp: new Date(Date.now() + countdownSeconds),
     onExpire: goToNextRound,
   });
@@ -66,6 +66,7 @@ export const Round = ({
     // if no movie selected (due to timeout) it will be a lose
     const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
     pause();
+    startPopupCountdown();
     setBlurMultiplier(0);
     if (result === "win") {
       // FIXME naive score computation: lose one point for every second used
