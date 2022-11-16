@@ -33,7 +33,7 @@ export const Round = ({
   const [showPopup, setShowPopup] = useState(false);
   const [roundResult, setRoundResult] = useState("incorrect");
 
-  const timeoutSeconds = import.meta.env.DEV ? 8000 : 20000;
+  const timeoutSeconds = import.meta.env.DEV ? 10000 : 30000;
 
   const { seconds, pause } = useTimer({
     autoStart: true,
