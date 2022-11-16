@@ -14,7 +14,7 @@ export const Play = () => {
     queryFn: api().movies,
   });
 
-  const [selectedMovie, setSelectedMovie] = useState<Movie>();
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
@@ -28,7 +28,6 @@ export const Play = () => {
         <div className="w-[512px] h-[512px] bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/25/Blisk-logo-512-512-background-transparent.png')]"></div>
         {selectedMovie && <img src={selectedMovie.posterUrl} />}
         {selectedMovie && <div>{selectedMovie.posterUrl} </div>}
-        <div>selected {selectedMovie?.title ?? "none"}</div>
         <SearchDropdown
           movies={movies}
           selectedMovie={selectedMovie}

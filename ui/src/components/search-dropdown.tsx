@@ -4,7 +4,7 @@ import { Movie } from "../api";
 
 type Props = {
   movies: Movie[];
-  selectedMovie?: Movie;
+  selectedMovie?: Movie | null;
   setSelectedMovie: React.Dispatch<Movie>;
 };
 
@@ -14,7 +14,6 @@ export function SearchDropdown({
   setSelectedMovie,
 }: Props) {
   const [query, setQuery] = useState("");
-
   const filteredMovies =
     query === ""
       ? []
@@ -31,7 +30,7 @@ export function SearchDropdown({
           onChange={(event) => {
             setQuery(event.target.value);
           }}
-          // displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
+          displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
         />
         <Transition
           leave="transition ease-in duration-100"
