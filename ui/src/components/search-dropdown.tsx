@@ -8,6 +8,8 @@ type Props = {
   setSelectedMovie: React.Dispatch<Movie>;
 };
 
+// FIXME add some fake movies to the completion bar
+
 export function SearchDropdown({
   movies,
   selectedMovie,

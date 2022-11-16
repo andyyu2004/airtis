@@ -73,15 +73,11 @@ export const Play = () => {
     setTargetMovieId(Math.floor(Math.random() * (movies?.length ?? 0)));
   }
 
+  useEffect(changeTarget, [movies]);
+  const NUM_ROUNDS = 5;
   useEffect(() => {
     changeTarget();
-  }, [movies]);
-
-  useEffect(() => {
-    changeTarget();
-    if (round === 5) {
-      navigate("/result");
-    }
+    if (round === NUM_ROUNDS) navigate("/result");
   }, [round]);
 
   if (isLoading) return <div>Loading...</div>;
