@@ -115,7 +115,9 @@ export function SearchDropdown({
   return (
     <Combobox value={selectedMovie} onChange={setSelectedMovie}>
       <div className="relative text-left">
-        <Combobox.Label className="p-1">Guess the movie:</Combobox.Label>
+        <Combobox.Label className="p-1 text-xl">
+          Guess the movie:
+        </Combobox.Label>
         <Combobox.Input
           className="py-2 px-3 text-sm leading-5 focus:ring-0 h-10 w-full rounded border border-gray-300"
           onChange={event => setQuery(event.target.value)}
