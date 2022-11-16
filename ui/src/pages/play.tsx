@@ -3,8 +3,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { GameSpec, RoundSpec } from "../state";
 import { useQuery } from "@tanstack/react-query";
 import { api, Movie } from "../api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import Countdown from "react-countdown";
 
 export type RoundProps = {
   movies: Movie[];
@@ -71,21 +72,32 @@ export const Play = ({
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
 
+  const ref = useRef<Countdown>(null);
+  const [until, setUntil] = useState(Date.now() + 5000);
+
+  useEffect(() => {
+    setUntil(Date.now() + 3000);
+    // doesn't autostart a second time without this explicit call for some reason
+    ref.current?.start();
+  }, [round]);
+
   return (
-    <div className="space-y-2">
-      <div>Round {round + 1}</div>
-      <div>Score {score}</div>
-      {round < gameSpec.rounds.length ? (
-        <Round
-          movies={movies}
-          setRound={setRound}
-          roundSpec={gameSpec.rounds[round]}
-          setScore={setScore}
-        />
-      ) : (
-        <Navigate to="/result" state={{ score, numRounds: NUM_ROUNDS }} />
-      )}
-    </div>
+    <Countdown autoStart date={until} ref={ref}>
+      <div className="space-y-2">
+        <div>Round {round + 1}</div>
+        <div>Score {score}</div>
+        {round < gameSpec.rounds.length ? (
+          <Round
+            movies={movies}
+            setRound={setRound}
+            roundSpec={gameSpec.rounds[round]}
+            setScore={setScore}
+          />
+        ) : (
+          <Navigate to="/result" state={{ score, numRounds: NUM_ROUNDS }} />
+        )}
+      </div>
+    </Countdown>
   );
 };
 
