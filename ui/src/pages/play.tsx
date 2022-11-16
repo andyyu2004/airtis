@@ -71,6 +71,12 @@ export const Round = ({
   const blurMultiplier =
     Math.max(seconds * 1000 - timeoutSeconds / 3, 0) / timeoutSeconds;
 
+  const goToNextRound = () => {
+    closeModal();
+    // advance to next round
+    setRound(round => round + 1);
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-5">
@@ -140,11 +146,7 @@ export const Round = ({
                       <button
                         type="button"
                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={() => {
-                          closeModal();
-                          // advance to next round
-                          setRound(round => round + 1);
-                        }}
+                        onClick={goToNextRound}
                       >
                         {`Got it, Go to ${
                           roundNumber === NUM_ROUNDS - 1

@@ -116,6 +116,7 @@ export function SearchDropdown({
     <Combobox value={selectedMovie} onChange={setSelectedMovie}>
       <div className="relative text-left">
         <Combobox.Input
+          autoFocus
           className="py-2 px-3 text-sm leading-5 focus:ring-0 h-10 w-full rounded border border-gray-300"
           onChange={event => setQuery(event.target.value)}
           displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
