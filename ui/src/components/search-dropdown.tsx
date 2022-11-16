@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { Movie } from "../api";
 
@@ -100,6 +100,11 @@ export function SearchDropdown({
   setSelectedMovie,
 }: Props) {
   const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const MAX_COMPLETIONS = 10;
   const allMovies = [...movies, ...dummyMovies];
@@ -116,7 +121,7 @@ export function SearchDropdown({
     <Combobox value={selectedMovie} onChange={setSelectedMovie}>
       <div className="relative text-left">
         <Combobox.Input
-          autoFocus
+          ref={inputRef}
           className="py-2 px-3 text-sm leading-5 focus:ring-0 h-10 w-full rounded border border-gray-300"
           onChange={event => setQuery(event.target.value)}
           displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
