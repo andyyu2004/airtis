@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airtis
+  namespace: core
+  labels:
+    app: airtis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airtis
+  template:
+    metadata:
+      labels:
+        app: airtis
+    spec:
+      containers:
+        - name: airtis
+          image: 191213556404.dkr.ecr.us-east-1.amazonaws.com/airtis:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: airtis
+  namespace: core
+  annotations:
+    kubernetes.io/ingress.provider: "nginx"
+    kubernetes.io/ingress.class: "internal"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: api-int.dev.movio.co
+      http:
+        paths:
+          - path: /core/airtis(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: airtis
+                port:
+                  number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core
+  name: airtis
+spec:
+  selector:
+    app: airtis
+  ports:
+    - port: 80
+      targetPort: 80
