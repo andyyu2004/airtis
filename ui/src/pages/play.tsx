@@ -65,13 +65,20 @@ export const Play = () => {
     queryKey: ["movies"],
     queryFn: api().movies,
   });
+
   const round = useRecoilValue(roundState);
-  const [targetMovieId, setTargetMovieId] = useState(
-    Math.floor(Math.random() * (movies?.length ?? 0))
-  );
-  useEffect(() => {
+  const [targetMovieId, setTargetMovieId] = useState(0);
+
+  function changeTarget() {
     setTargetMovieId(Math.floor(Math.random() * (movies?.length ?? 0)));
-    console.log("round:", round);
+  }
+
+  useEffect(() => {
+    changeTarget();
+  }, [movies]);
+
+  useEffect(() => {
+    changeTarget();
     if (round === 5) {
       navigate("/result");
     }
