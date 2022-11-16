@@ -126,13 +126,10 @@ export const Round = ({
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
-                      {isRoundWin ? "You are correct!" : "Almost there!"}
+                      {isRoundWin
+                        ? "You are correct!"
+                        : `Not quite! The right answer was ${targetMovie.title}`}
                     </Dialog.Title>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Your score has been successfully recorded.
-                      </p>
-                    </div>
 
                     <div className="mt-4">
                       <button
