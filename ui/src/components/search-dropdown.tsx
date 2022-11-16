@@ -133,7 +133,7 @@ export function SearchDropdown({
             <Combobox.Options className="absolute mt-1 max-h-32 w-full overflow-auto rounded bg-white  text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filteredMovies.map(movie => (
                 <Combobox.Option
-                  className="bg-gray-100 cursor-pointer hover:bg-gray-200 p-2"
+                  className="font-bold bg-gray-400 text-slate-100 cursor-pointer hover:bg-gray-500 hover:text-white p-2"
                   key={movie.id}
                   value={movie}
                 >
