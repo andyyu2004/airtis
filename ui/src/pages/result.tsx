@@ -11,7 +11,7 @@ export const Result = () => {
   return (
     <>
       {state.score && (
-        <div className="mb-10 text-4xl font-bold">{`Congratulation! You got  ${state.score} out of ${state.numRounds} correct.`}</div>
+        <div className="mb-10 text-4xl font-bold">{`Congratulations! You got  ${state.score} out of ${state.numRounds} correct.`}</div>
       )}
 
       <Link to="/play" className="text-5xl font-bold">

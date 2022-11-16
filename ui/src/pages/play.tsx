@@ -73,10 +73,13 @@ export const Play = ({
   const [score, setScore] = useState(0);
 
   const ref = useRef<Countdown>(null);
-  const [until, setUntil] = useState(Date.now() + 5000);
+  const countdownSeconds = import.meta.env.DEV ? 1000 : 3000;
+  console.log(countdownSeconds);
+
+  const [until, setUntil] = useState(Date.now() + countdownSeconds);
 
   useEffect(() => {
-    setUntil(Date.now() + 3000);
+    setUntil(Date.now() + countdownSeconds);
     // doesn't autostart a second time without this explicit call for some reason
     ref.current?.start();
   }, [round]);
