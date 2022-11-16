@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { Movie } from "../api";
 
@@ -19,7 +19,7 @@ export function SearchDropdown({
   const filteredMovies =
     query === ""
       ? []
-      : movies.filter((movie) => {
+      : movies.filter(movie => {
           return movie.title.toLowerCase().includes(query.toLowerCase());
         });
 
@@ -29,9 +29,7 @@ export function SearchDropdown({
         <Combobox.Label className="p-1">Guess the movie:</Combobox.Label>
         <Combobox.Input
           className="py-2 px-3 text-sm leading-5 focus:ring-0 h-10 w-full rounded border border-gray-300"
-          onChange={(event) => {
-            setQuery(event.target.value);
-          }}
+          onChange={event => setQuery(event.target.value)}
           displayValue={(movie: Movie | undefined) => movie?.title ?? ""}
         />
         <Transition
@@ -42,7 +40,7 @@ export function SearchDropdown({
         >
           {filteredMovies.length > 0 && (
             <Combobox.Options className="absolute mt-1 max-h-32 w-full overflow-auto rounded bg-white  text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {filteredMovies.map((movie) => (
+              {filteredMovies.map(movie => (
                 <Combobox.Option
                   className="bg-gray-100 cursor-pointer hover:bg-gray-200 p-2"
                   key={movie.id}
