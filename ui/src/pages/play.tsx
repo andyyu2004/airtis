@@ -1,6 +1,6 @@
 import { SearchDropdown } from "../components/search-dropdown";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { GameSpec, RoundSpec, roundState, scoreState } from "../state";
+import { GameSpec, RoundSpec } from "../state";
 import { useQuery } from "@tanstack/react-query";
 import { api, Movie } from "../api";
 import { useEffect, useState } from "react";
@@ -10,11 +10,15 @@ export type RoundProps = {
   movies: Movie[];
   roundSpec: RoundSpec;
   setRound: React.Dispatch<React.SetStateAction<number>>;
+  setScore: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const Round = ({ movies, roundSpec, setRound }: RoundProps) => {
-  const setScore = useSetRecoilState(scoreState);
-
+export const Round = ({
+  movies,
+  roundSpec,
+  setRound,
+  setScore,
+}: RoundProps) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find((m) => m.id === roundSpec.targetMovieId)!;
   console.log(targetMovie);
@@ -27,7 +31,6 @@ export const Round = ({ movies, roundSpec, setRound }: RoundProps) => {
       // add 1 score to the result
       setScore((score) => score + 1);
     }
-    // navigate("/result", { state: { result } });
   };
 
   return (
@@ -64,18 +67,21 @@ export const Play = ({
   movies: Movie[];
 }) => {
   const [round, setRound] = useState(0);
+  const [score, setScore] = useState(0);
 
   return (
     <div>
       <div>Round {round + 1}</div>
+      <div>Score {score}</div>
       {round < gameSpec.rounds.length ? (
         <Round
           movies={movies}
           setRound={setRound}
           roundSpec={gameSpec.rounds[round]}
+          setScore={setScore}
         />
       ) : (
-        <Navigate to="/result" />
+        <Navigate to="/result" state={{ score, numRounds: NUM_ROUNDS }} />
       )}
     </div>
   );

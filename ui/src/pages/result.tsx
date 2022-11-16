@@ -1,24 +1,21 @@
-import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { roundState, scoreState } from "../state";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const Result = () => {
   const { state } = useLocation();
-  const score = useRecoilValue(scoreState);
-  const [round, setRound] = useRecoilState(roundState);
-  useEffect(() => {
-    setRound(0);
-  }, []);
+  const navigate = useNavigate();
+
+  if (!state) {
+    navigate("/");
+  }
 
   return (
     <>
-      {score && (
-        <div className="mb-10 text-4xl font-bold">{`Congratulation! You got  ${score} out of 5 correct.`}</div>
+      {state.score && (
+        <div className="mb-10 text-4xl font-bold">{`Congratulation! You got  ${state.score} out of ${state.numRounds} correct.`}</div>
       )}
 
       <Link to="/play" className="text-5xl font-bold">
-        play again
+        Play again
       </Link>
     </>
   );
