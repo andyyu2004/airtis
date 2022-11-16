@@ -11,7 +11,7 @@ def text2img(prompt, s3):
     # device = "cuda" # ONLY FOR NVIDIA
 
     pipe = StableDiffusionPipeline.from_pretrained(model_id).to(device)
-    # pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, revision="fp16")).to(device) # ONLY FOR NVIDIA
+    # pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, revision="fp16").to(device) # ONLY FOR NVIDIA
 
     image = pipe(prompt).images[0]
 
