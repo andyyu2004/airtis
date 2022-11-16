@@ -27,7 +27,7 @@ def pictionary(title):
     print(f"AI overlord says: {description}")
 
     genres = " ".join([x["name"] for x in movie["genres"]])
-    prompt = f"movie {movie['title']}, genre {genres} , {description}"
+    prompt = f"movie {movie['title']}, genres {genres}, {description}"
     
     text2img(prompt, generated_poster_path)
   else:
