@@ -6,6 +6,7 @@ import { api, Movie } from "../api";
 import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Countdown from "react-countdown";
+import { useTimer } from "react-timer-hook";
 
 export type RoundProps = {
   movies: Movie[];
@@ -22,12 +23,12 @@ export const Round = ({
 }: RoundProps) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
-  console.log(targetMovie);
 
   const checkResult = () => {
     // advance to next round
     setRound(round => round + 1);
-    const result = selectedMovie!.id === targetMovie.id ? "win" : "lose";
+    // if no movie selected (due to timeout) it will be a lose
+    const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
     if (result === "win") {
       // add 1 score to the result
       setScore(score => score + 1);
@@ -35,9 +36,18 @@ export const Round = ({
     setSelectedMovie(null);
   };
 
+  const timeoutSeconds = import.meta.env.DEV ? 5000 : 15000;
+
+  const { seconds } = useTimer({
+    autoStart: true,
+    expiryTimestamp: new Date(Date.now() + timeoutSeconds),
+    onExpire: checkResult,
+  });
+
   return (
     <div>
       <div className="flex flex-col gap-5">
+        <div>Time: {seconds}</div>
         {/* <div className="w-[512px] h-[512px] bg-[url('https://upload.wikimedia.org/wikipedia/commons/2/25/Blisk-logo-512-512-background-transparent.png')]"></div> */}
         <div>
           <img className="w-[512px] h-[512px]" src={targetMovie.posterUrl} />
@@ -73,7 +83,7 @@ export const Play = ({
   const [score, setScore] = useState(0);
 
   const ref = useRef<Countdown>(null);
-  const countdownSeconds = import.meta.env.DEV ? 1000 : 3000;
+  const countdownSeconds = import.meta.env.DEV ? 800 : 3000;
   console.log(countdownSeconds);
 
   const [until, setUntil] = useState(Date.now() + countdownSeconds);
@@ -94,12 +104,16 @@ export const Play = ({
           Score <span className="font-medium">{score}</span>
         </div>
         {round < gameSpec.rounds.length ? (
-          <Round
-            movies={movies}
-            setRound={setRound}
-            roundSpec={gameSpec.rounds[round]}
-            setScore={setScore}
-          />
+          <>
+            <div>Round {round + 1}</div>
+            <div>Score {score}</div>
+            <Round
+              movies={movies}
+              setRound={setRound}
+              roundSpec={gameSpec.rounds[round]}
+              setScore={setScore}
+            />
+          </>
         ) : (
           <Navigate to="/result" state={{ score, numRounds: NUM_ROUNDS }} />
         )}
