@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nicolas
+  name: audience-builder-prototype
+spec:
+  selector:
+    app: audience-builder-prototype
+  ports:
+  - port: 80
+    targetPort: 80

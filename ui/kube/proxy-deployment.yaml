@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy
+  namespace: nicolas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        name: oauth2-proxy
+    spec:
+      volumes:
+        - name: cfg
+          configMap:
+            name: oauth2-proxy-cfg
+      containers:
+        - name: oauth2-proxy
+          image: bitnami/oauth2-proxy
+          args: ['--config=/etc/config/oauth2-proxy.cfg']
+          volumeMounts:
+            - name: cfg
+              mountPath: /etc/config
+          resources:
+            requests:
+              cpu: '10m'
+              memory: '256Mi'
+            limits:
+              cpu: '100m'
+              memory: '256Mi'
+          ports:
+            - containerPort: 4180
+              name: http

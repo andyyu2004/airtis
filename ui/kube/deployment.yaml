@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airtis
+  namespace: core
+  labels:
+    app: airtis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airtis
+  template:
+    metadata:
+      labels:
+        app: airtis
+    spec:
+      containers:
+        - name: airtis
+          image: 650454640207.dkr.ecr.ap-southeast-2.amazonaws.com/airtis:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "64Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 80

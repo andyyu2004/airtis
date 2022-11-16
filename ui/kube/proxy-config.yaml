@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth2-proxy-cfg
+  namespace: nicolas
+data:
+  oauth2-proxy.cfg: |+
+    ## OAuth2 Proxy Config File
+    ## https://github.com/oauth2-proxy/oauth2-proxy
+    http_address = "0.0.0.0:4180"
+    reverse_proxy = true
+    redirect_url = "https://audience-builder-prototype.dev.movio.co/oauth2/callback"
+    upstreams = [
+        "http://audience-builder-prototype/"
+    ]
+    email_domains = [
+        "movio.co"
+    ]
+    client_id = "526449457244-1sp0c0mrtuaild981s3jaek7c6nrlhjd.apps.googleusercontent.com"
+    client_secret = "<REDACTED>"
+    cookie_name = "_oauth2_proxy"
+    cookie_secret = "<REDACTED>"
+

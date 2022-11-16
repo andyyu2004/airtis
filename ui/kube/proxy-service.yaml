@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth2-proxy
+  namespace: nicolas
+  labels:
+    name: oauth2-proxy
+spec:
+  ports:
+    - targetPort: 4180
+      port: 80
+      name: http
+      protocol: TCP
+  selector:
+    name: oauth2-proxy
