@@ -7,3 +7,6 @@ build:
 push: build
 	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 191213556404.dkr.ecr.us-east-1.amazonaws.com
 	docker push 191213556404.dkr.ecr.us-east-1.amazonaws.com/airtis:latest
+
+deploy: push
+	kdev rollout restart deployment/airtis
