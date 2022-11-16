@@ -21,7 +21,7 @@ function makeMockAPI(): API {
         id: 2,
         title: "Mission Impossible",
         posterUrl:
-          "https://s3.console.aws.amazon.com/s3/object/pictionarai?region=us-east-1&prefix=img/20221115230900_00000_mission_impossible_When_an_IMF_mission_ends_badly_the_world_is_faced_with_dire_consequences_As_Ethan_Hunt_takes_it_upon_himself_to_fulfill_his_original_briefing.png",
+          "https://pictionarai.s3.amazonaws.com/img/20221115230900_00000_mission_impossible_When_an_IMF_mission_ends_badly_the_world_is_faced_with_dire_consequences_As_Ethan_Hunt_takes_it_upon_himself_to_fulfill_his_original_briefing.png",
       },
       {
         id: 3,
