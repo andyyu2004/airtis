@@ -176,7 +176,6 @@ export const Play = ({
 
   const ref = useRef<Countdown>(null);
   const countdownSeconds = import.meta.env.DEV ? 800 : 3000;
-  console.log(countdownSeconds);
 
   const [until, setUntil] = useState(Date.now() + countdownSeconds);
 
@@ -253,7 +252,6 @@ export const Game = () => {
   }
 
   const gameSpec = generateGameSpec(movies);
-  console.log(gameSpec);
 
   return (
     <>
