@@ -32,6 +32,7 @@ export const Round = ({
   const targetMovie = movies.find(m => m.id === roundSpec.targetMovieId)!;
   const [showPopup, setShowPopup] = useState(false);
   const [roundResult, setRoundResult] = useState("incorrect");
+  const [blurMultiplier, setBlurMultiplier] = useState(100);
 
   const timeoutSeconds = import.meta.env.DEV ? 10000 : 30000;
 
@@ -41,10 +42,31 @@ export const Round = ({
     onExpire: checkResult,
   });
 
+  useEffect(() => {
+    // the idea of this calculation is to get less blurry as time ticks down becoming fully unblurry when 1/3 of the time is left
+    const blurMultiplier =
+      Math.max(seconds * 1000 - timeoutSeconds / 3, 0) / timeoutSeconds;
+    setBlurMultiplier(blurMultiplier);
+  }, [seconds, timeoutSeconds]);
+
+  const goToNextRound = () => {
+    closeModal();
+    // advance to next round
+    setRound(round => round + 1);
+  };
+
+  const countdownSeconds = 3000 + timeoutSeconds;
+  const { seconds: secs } = useTimer({
+    autoStart: true,
+    expiryTimestamp: new Date(Date.now() + countdownSeconds),
+    onExpire: goToNextRound,
+  });
+
   function checkResult() {
     // if no movie selected (due to timeout) it will be a lose
     const result = selectedMovie?.id === targetMovie.id ? "win" : "lose";
     pause();
+    setBlurMultiplier(0);
     if (result === "win") {
       // FIXME naive score computation: lose one point for every second used
       setScore(score => score + (timeoutSeconds / 1000 - seconds));
@@ -65,16 +87,6 @@ export const Round = ({
 
   const closeModal = () => {
     setShowPopup(false);
-  };
-
-  // the idea of this calculation is to get less blurry as time ticks down becoming fully unblurry when 1/3 of the time is left
-  const blurMultiplier =
-    Math.max(seconds * 1000 - timeoutSeconds / 3, 0) / timeoutSeconds;
-
-  const goToNextRound = () => {
-    closeModal();
-    // advance to next round
-    setRound(round => round + 1);
   };
 
   return (
@@ -153,6 +165,7 @@ export const Round = ({
                             ? "result"
                             : "next round"
                         }`}
+                        <span className="ml-2">{secs}</span>
                       </button>
                     </div>
                   </Dialog.Panel>
