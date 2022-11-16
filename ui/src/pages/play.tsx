@@ -1,6 +1,6 @@
 import { SearchDropdown } from "../components/search-dropdown";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { roundState, scoreState } from "../state";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { GameSpec, RoundSpec, roundState, scoreState } from "../state";
 import { useQuery } from "@tanstack/react-query";
 import { api, Movie } from "../api";
 import { useEffect, useState } from "react";
@@ -8,18 +8,19 @@ import { useNavigate } from "react-router-dom";
 
 export type RoundProps = {
   movies: Movie[];
-  targetMovieIdx: number;
+  roundSpec: RoundSpec;
+  setRound: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const Round = ({ movies, targetMovieIdx }: RoundProps) => {
-  const [round, setRound] = useRecoilState(roundState);
-  const [score, setScore] = useRecoilState(scoreState);
-  const navigate = useNavigate();
+export const Round = ({ movies, roundSpec, setRound }: RoundProps) => {
+  const setScore = useSetRecoilState(scoreState);
+
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const targetMovie = movies[targetMovieIdx];
+  const targetMovie = movies.find((m) => m.id === roundSpec.targetMovieId)!;
   console.log(targetMovie);
 
   const checkResult = () => {
+    // advance to next round
     setRound((round) => round + 1);
     const result = selectedMovie!.id === targetMovie.id ? "win" : "lose";
     if (result === "win") {
@@ -55,8 +56,51 @@ export const Round = ({ movies, targetMovieIdx }: RoundProps) => {
   );
 };
 
-export const Play = () => {
-  const navigate = useNavigate();
+export const Play = ({
+  movies,
+  gameSpec,
+}: {
+  gameSpec: GameSpec;
+  movies: Movie[];
+}) => {
+  const [round, setRound] = useState(0);
+
+  return (
+    <div>
+      <div>Round {round + 1}</div>
+      {round < gameSpec.rounds.length ? (
+        <Round
+          movies={movies}
+          setRound={setRound}
+          roundSpec={gameSpec.rounds[round]}
+        />
+      ) : (
+        <div>done</div>
+      )}
+    </div>
+  );
+};
+
+const NUM_ROUNDS = 5;
+
+function generateGameSpec(movies: Movie[]): GameSpec {
+  if (movies.length < NUM_ROUNDS) {
+    throw new Error("Not enough movies");
+  }
+
+  const rounds: RoundSpec[] = [];
+  while (rounds.length < NUM_ROUNDS) {
+    const targetMovieId = movies[Math.floor(Math.random() * movies.length)].id;
+    if (rounds.find((r) => r.targetMovieId === targetMovieId)) {
+      continue;
+    }
+    rounds.push({ targetMovieId });
+  }
+
+  return { rounds };
+}
+
+export const Game = () => {
   const {
     isLoading,
     error,
@@ -66,26 +110,23 @@ export const Play = () => {
     queryFn: api().movies,
   });
 
-  const round = useRecoilValue(roundState);
-  const [targetMovieId, setTargetMovieId] = useState(0);
-
-  function changeTarget() {
-    setTargetMovieId(Math.floor(Math.random() * (movies?.length ?? 0)));
-  }
-
-  useEffect(changeTarget, [movies]);
-  const NUM_ROUNDS = 5;
-  useEffect(() => {
-    changeTarget();
-    if (round === NUM_ROUNDS) navigate("/result");
-  }, [round]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error has occurred</div>;
   if (!movies) {
     throw new Error();
   }
 
-  console.log("target", targetMovieId);
-  return <Round targetMovieIdx={targetMovieId} movies={movies} />;
+  const gameSpec = generateGameSpec(movies);
+  console.log(gameSpec);
+
+  return (
+    <>
+      {movies.map((movie) => (
+        // hack to make all the images for the game preload in cache
+        // otherwise loading next round is slow
+        <img key={movie.id} style={{ display: "none" }} src={movie.posterUrl} />
+      ))}
+      <Play movies={movies} gameSpec={gameSpec} />
+    </>
+  );
 };

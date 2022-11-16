@@ -2,9 +2,15 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 
-import { Home, Play, Result } from "./pages";
+import { Game, Home, Play, Result } from "./pages";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+import { GameSpec } from "./state";
+import { api, Movie } from "./api";
 
 const queryClient = new QueryClient();
 
@@ -16,14 +22,13 @@ function App() {
     },
     {
       path: "/play",
-      element: <Play />,
+      element: <Game />,
     },
     {
       path: "/result",
       element: <Result />,
     },
   ]);
-
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
