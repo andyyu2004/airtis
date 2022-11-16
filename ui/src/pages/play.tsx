@@ -143,19 +143,26 @@ export const Round = ({
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                     <Dialog.Title
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
                       {roundResult === "correct"
-                        ? "You are correct!"
+                        ? "You are correct!, It's "
                         : roundResult === "incorrect"
-                        ? `Not quite! The right answer was ${targetMovie.title}`
-                        : `Time's up! The right answer was ${targetMovie.title}`}
+                        ? `Not quite! The right answer was `
+                        : `Time's up! The right answer was `}
+                      <span className="font-bold">{targetMovie.title}</span>
                     </Dialog.Title>
+                    <div className="mt-3">
+                      <img
+                        className="w-[476px] h-[476px]"
+                        src={targetMovie.posterUrl}
+                      />
+                    </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex justify-end">
                       <button
                         type="button"
                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
