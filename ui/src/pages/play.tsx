@@ -70,7 +70,7 @@ export const Round = ({
     setBlurMultiplier(0);
     if (result === "win") {
       // FIXME naive score computation: lose one point for every second used
-      setScore(score => score + (timeoutSeconds / 1000 - seconds));
+      setScore(score => score + seconds);
       setCorrectGuesses(correctGuesses => correctGuesses + 1);
       setRoundResult("correct");
     } else if (selectedMovie) {

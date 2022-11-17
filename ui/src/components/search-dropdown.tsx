@@ -86,7 +86,6 @@ const dummyMovies: Movie[] = [
   "When in Rome",
   "Youth in Revolt",
   "You Will Meet a Tall Dark Stranger",
-  "Zack and Miri Make a Porno",
 ].map((title, i) => ({
   id: 10000 + i,
   posterUrl: "",
