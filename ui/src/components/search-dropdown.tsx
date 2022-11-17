@@ -65,7 +65,6 @@ const dummyMovies: Movie[] = [
   "Sex and the City Two",
   "She's Out of My League",
   "Something Borrowed",
-  "Tangled",
   "The Back-up Plan",
   "The Curious Case of Benjamin Button",
   "The Duchess",
